@@ -33,7 +33,6 @@ static NSTimeInterval const kSwipeAnimationDuration = .2f;
 @property (assign) NSInteger currentIndex;
 @property (assign) NSInteger displayedIndex;
 @property (nonatomic, strong) UILabel *currentLabel;
-@property (nonatomic, readonly) UIPageControl *pageControl;
 
 @end
 

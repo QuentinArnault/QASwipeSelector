@@ -28,6 +28,9 @@
 @property (nonatomic, weak) IBOutlet id<QASwipeSelectorDataSource>dataSource;
 @property (nonatomic, weak) IBOutlet id<QASwipeSelectorDelegate>delegate;
 
+@property (nonatomic, readonly) UILabel *currentLabel;
+@property (nonatomic, readonly) UIPageControl *pageControl;
+
 - (void)reloadData;
 
 @end
