@@ -53,6 +53,8 @@
 		A07062F718BDC34E001FF406 /* QASwipeSelectorTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "QASwipeSelectorTests-Info.plist"; sourceTree = "<group>"; };
 		A07062F918BDC34E001FF406 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A07062FB18BDC34E001FF406 /* QASwipeSelectorTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QASwipeSelectorTests.m; sourceTree = "<group>"; };
+		A08F8BA618BDC52C0083F504 /* QASwipeSelectorDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QASwipeSelectorDataSource.h; sourceTree = "<group>"; };
+		A08F8BA718BDC52C0083F504 /* QASwipeSelectorDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QASwipeSelectorDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,6 +114,8 @@
 			children = (
 				A07062E418BDC34E001FF406 /* QASwipeSelector.h */,
 				A07062E618BDC34E001FF406 /* QASwipeSelector.m */,
+				A08F8BA618BDC52C0083F504 /* QASwipeSelectorDataSource.h */,
+				A08F8BA718BDC52C0083F504 /* QASwipeSelectorDelegate.h */,
 				A07062E218BDC34E001FF406 /* Supporting Files */,
 			);
 			path = QASwipeSelector;
@@ -409,6 +413,7 @@
 				A070630118BDC34E001FF406 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		A070630218BDC34E001FF406 /* Build configuration list for PBXNativeTarget "QASwipeSelectorTests" */ = {
 			isa = XCConfigurationList;
@@ -417,6 +422,7 @@
 				A070630418BDC34E001FF406 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
