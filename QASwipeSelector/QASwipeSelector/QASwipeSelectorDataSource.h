@@ -26,6 +26,6 @@
 
 @required
 - (NSUInteger)numberOfItemsInSwipeSelector:(QASwipeSelector *)swipeSelector;
-- (NSString *)swipeSelector:(QASwipeSelector *)swipeSelector titleAtIndexPath:(NSIndexPath *)indexPath;
+- (UIView *)swipeSelector:(QASwipeSelector *)swipeSelector viewForItemAtIndex:(NSIndexPath *)indexPath;
 
 @end

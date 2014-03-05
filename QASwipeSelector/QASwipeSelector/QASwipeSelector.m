@@ -32,7 +32,7 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
 
 @property (assign) NSInteger currentIndex;
 @property (assign) NSInteger displayedIndex;
-@property (nonatomic, strong) UILabel *currentLabel;
+@property (nonatomic, strong) UIView *currentItemView;
 
 @end
 
@@ -50,18 +50,18 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
         
         CGPoint disappearAnimationCenter;
         CGPoint prepareAnimationCenter;
-        CGPoint appearAnimationCenter = self.currentLabel.center;
+        CGPoint appearAnimationCenter = self.currentItemView.center;
         
         if (self.currentIndex > self.displayedIndex) {
-            disappearAnimationCenter = CGPointMake(-self.currentLabel.center.x
-                                                   , self.currentLabel.center.y);
-            prepareAnimationCenter = CGPointMake(self.frame.size.width + (self.currentLabel.frame.size.width / 2.f)
-                                                 , self.currentLabel.center.y);
+            disappearAnimationCenter = CGPointMake(-self.currentItemView.center.x
+                                                   , self.currentItemView.center.y);
+            prepareAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
+                                                 , self.currentItemView.center.y);
         } else {
-            disappearAnimationCenter = CGPointMake(self.frame.size.width + (self.currentLabel.frame.size.width / 2.f)
-                                                   , self.currentLabel.center.y);
-            prepareAnimationCenter = CGPointMake(-self.currentLabel.center.x
-                                                 , self.currentLabel.center.y);
+            disappearAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
+                                                   , self.currentItemView.center.y);
+            prepareAnimationCenter = CGPointMake(-self.currentItemView.center.x
+                                                 , self.currentItemView.center.y);
         }
         
         
@@ -72,17 +72,15 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
         }
 
         [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
-            self.currentLabel.center = disappearAnimationCenter;
+            self.currentItemView.center = disappearAnimationCenter;
         } completion:^(BOOL finished) {
             if (self.currentIndex < self.pageControl.numberOfPages) {
-                NSString *currentItemTitle = [self.dataSource swipeSelector:self
-                                                           titleAtIndexPath:[NSIndexPath indexPathWithIndex:self.currentIndex]];
-                
-                self.currentLabel.text = currentItemTitle;
+                self.currentItemView = [self.dataSource swipeSelector:self
+                                                   viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
             }
-            self.currentLabel.center = prepareAnimationCenter;
+            self.currentItemView.center = prepareAnimationCenter;
             [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
-                self.currentLabel.center = appearAnimationCenter;
+                self.currentItemView.center = appearAnimationCenter;
             } completion:^(BOOL finished) {
                 self.displayedIndex = self.currentIndex;
                 self.pageControl.currentPage = self.currentIndex;
@@ -95,10 +93,8 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
             
         }];
     } else {
-        NSString *currentItemTitle = [self.dataSource swipeSelector:self
-                                                   titleAtIndexPath:[NSIndexPath indexPathWithIndex:self.currentIndex]];
-        
-        self.currentLabel.text = currentItemTitle;
+        self.currentItemView = [self.dataSource swipeSelector:self
+                                           viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
     }
     
 }
@@ -135,7 +131,7 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    self.currentLabel.frame = CGRectMake(0.f
+    self.currentItemView.frame = CGRectMake(0.f
                                          , 0.f
                                          , self.frame.size.width
                                          , self.frame.size.height);
@@ -143,6 +139,12 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
                                         , self.frame.size.height - kPageControlHeight
                                         , self.frame.size.width
                                         , kPageControlHeight);
+}
+
+- (void)didMoveToSuperview {
+    [super didMoveToSuperview];
+    
+    [self reloadData];
 }
 
 #pragma mark NSObject
@@ -167,11 +169,6 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
 #pragma mark private
 - (void)commonInit {
     self.clipsToBounds = YES;
-    
-    self.currentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
-    self.currentLabel.textAlignment = NSTextAlignmentCenter;
-    
-    [self addSubview:self.currentLabel];
     
     [self addSubview:self.pageControl];
     
