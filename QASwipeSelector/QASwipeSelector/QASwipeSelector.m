@@ -26,7 +26,7 @@ static NSString *const kDataSourceKeyPath = @"dataSource";
 
 static NSUInteger const kPageControlHeight = 8.f;
 
-static NSTimeInterval const kSwipeAnimationDuration = .2f;
+static NSTimeInterval const kSwipeAnimationDuration = .1f;
 
 @interface QASwipeSelector ()
 
