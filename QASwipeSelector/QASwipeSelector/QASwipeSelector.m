@@ -19,8 +19,6 @@
 //  OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.//
 
 #import "QASwipeSelector.h"
-#import "QASwipeSelectorDataSource.h"
-#import "QASwipeSelectorDelegate.h"
 
 static NSString *const kDataSourceKeyPath = @"dataSource";
 

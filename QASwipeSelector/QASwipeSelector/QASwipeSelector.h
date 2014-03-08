@@ -33,3 +33,18 @@
 - (void)reloadData;
 
 @end
+
+@protocol QASwipeSelectorDataSource <NSObject>
+
+@required
+- (NSUInteger)numberOfItemsInSwipeSelector:(QASwipeSelector *)swipeSelector;
+- (UIView *)swipeSelector:(QASwipeSelector *)swipeSelector viewForItemAtIndex:(NSIndexPath *)indexPath;
+
+@end
+
+@protocol QASwipeSelectorDelegate <NSObject>
+
+@optional
+- (void)swipeSelector:(QASwipeSelector *)swipeSelector currentItemIndexDidChange:(NSIndexPath *)indexPath;
+
+@end
