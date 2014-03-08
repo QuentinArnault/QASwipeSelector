@@ -73,8 +73,10 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
             self.currentItemView.center = disappearAnimationCenter;
         } completion:^(BOOL finished) {
             if (self.currentIndex < self.pageControl.numberOfPages) {
+                [self.currentItemView removeFromSuperview];
                 self.currentItemView = [self.dataSource swipeSelector:self
                                                    viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
+                [self addSubview:self.currentItemView];
             }
             self.currentItemView.center = prepareAnimationCenter;
             [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
@@ -91,8 +93,10 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
             
         }];
     } else {
+        [self.currentItemView removeFromSuperview];
         self.currentItemView = [self.dataSource swipeSelector:self
                                            viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
+        [self addSubview:self.currentItemView];
     }
     
 }
