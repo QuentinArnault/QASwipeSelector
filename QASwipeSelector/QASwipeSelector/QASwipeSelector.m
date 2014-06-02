@@ -44,61 +44,62 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
 - (void)reloadData {
     self.pageControl.numberOfPages = [self.dataSource numberOfItemsInSwipeSelector:self];
     
-    if (self.displayedIndex != self.currentIndex ) {
-        
-        CGPoint disappearAnimationCenter;
-        CGPoint prepareAnimationCenter;
-        CGPoint appearAnimationCenter = self.currentItemView.center;
-        
-        if (self.currentIndex > self.displayedIndex) {
-            disappearAnimationCenter = CGPointMake(-self.currentItemView.center.x
-                                                   , self.currentItemView.center.y);
-            prepareAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
-                                                 , self.currentItemView.center.y);
-        } else {
-            disappearAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
-                                                   , self.currentItemView.center.y);
-            prepareAnimationCenter = CGPointMake(-self.currentItemView.center.x
-                                                 , self.currentItemView.center.y);
-        }
-        
-        
-        if (self.currentIndex >= self.pageControl.numberOfPages) {
-            self.currentIndex = 0;
-        } else if (self.currentIndex < 0) {
-            self.currentIndex = self.pageControl.numberOfPages - 1;
-        }
-
-        [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
-            self.currentItemView.center = disappearAnimationCenter;
-        } completion:^(BOOL finished) {
-            if (self.currentIndex < self.pageControl.numberOfPages) {
-                [self.currentItemView removeFromSuperview];
-                self.currentItemView = [self.dataSource swipeSelector:self
-                                                   viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
-                [self addSubview:self.currentItemView];
-            }
-            self.currentItemView.center = prepareAnimationCenter;
-            [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
-                self.currentItemView.center = appearAnimationCenter;
-            } completion:^(BOOL finished) {
-                self.displayedIndex = self.currentIndex;
-                self.pageControl.currentPage = self.currentIndex;
-                
-                if ([self.delegate respondsToSelector:@selector(swipeSelector:currentItemIndexDidChange:)]) {
-                    [self.delegate swipeSelector:self
-                       currentItemIndexDidChange:[NSIndexPath indexPathWithIndex:self.displayedIndex]];
-                }
-            }];
+    if (self.pageControl.numberOfPages > 0) {
+        if (self.displayedIndex != self.currentIndex ) {
             
-        }];
-    } else {
-        [self.currentItemView removeFromSuperview];
-        self.currentItemView = [self.dataSource swipeSelector:self
-                                           viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
-        [self addSubview:self.currentItemView];
+            CGPoint disappearAnimationCenter;
+            CGPoint prepareAnimationCenter;
+            CGPoint appearAnimationCenter = self.currentItemView.center;
+            
+            if (self.currentIndex > self.displayedIndex) {
+                disappearAnimationCenter = CGPointMake(-self.currentItemView.center.x
+                                                       , self.currentItemView.center.y);
+                prepareAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
+                                                     , self.currentItemView.center.y);
+            } else {
+                disappearAnimationCenter = CGPointMake(self.frame.size.width + (self.currentItemView.frame.size.width / 2.f)
+                                                       , self.currentItemView.center.y);
+                prepareAnimationCenter = CGPointMake(-self.currentItemView.center.x
+                                                     , self.currentItemView.center.y);
+            }
+            
+            
+            if (self.currentIndex >= self.pageControl.numberOfPages) {
+                self.currentIndex = 0;
+            } else if (self.currentIndex < 0) {
+                self.currentIndex = self.pageControl.numberOfPages - 1;
+            }
+            
+            [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
+                self.currentItemView.center = disappearAnimationCenter;
+            } completion:^(BOOL finished) {
+                if (self.currentIndex < self.pageControl.numberOfPages) {
+                    [self.currentItemView removeFromSuperview];
+                    self.currentItemView = [self.dataSource swipeSelector:self
+                                                       viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
+                    [self addSubview:self.currentItemView];
+                }
+                self.currentItemView.center = prepareAnimationCenter;
+                [UIView animateWithDuration:kSwipeAnimationDuration animations:^{
+                    self.currentItemView.center = appearAnimationCenter;
+                } completion:^(BOOL finished) {
+                    self.displayedIndex = self.currentIndex;
+                    self.pageControl.currentPage = self.currentIndex;
+                    
+                    if ([self.delegate respondsToSelector:@selector(swipeSelector:currentItemIndexDidChange:)]) {
+                        [self.delegate swipeSelector:self
+                           currentItemIndexDidChange:[NSIndexPath indexPathWithIndex:self.displayedIndex]];
+                    }
+                }];
+                
+            }];
+        } else {
+            [self.currentItemView removeFromSuperview];
+            self.currentItemView = [self.dataSource swipeSelector:self
+                                               viewForItemAtIndex:[NSIndexPath indexPathWithIndex:self.currentIndex]];
+            [self addSubview:self.currentItemView];
+        }
     }
-    
 }
 
 #pragma mark -
@@ -134,9 +135,9 @@ static NSTimeInterval const kSwipeAnimationDuration = .1f;
     [super layoutSubviews];
     
     self.currentItemView.frame = CGRectMake(0.f
-                                         , 0.f
-                                         , self.frame.size.width
-                                         , self.frame.size.height);
+                                            , 0.f
+                                            , self.frame.size.width
+                                            , self.frame.size.height);
     self.pageControl.frame = CGRectMake(0.f
                                         , self.frame.size.height - kPageControlHeight
                                         , self.frame.size.width
